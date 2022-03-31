@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+jest.mock('../lib/utils/github');
 
 describe('gitty routes', () => {
   beforeEach(() => {
@@ -22,13 +23,13 @@ describe('gitty routes', () => {
   it('redirects user to dashboard after successful login', async () => {
     const req = await request
       .agent(app)
-      .get('/api/v1/github/login/callback?code=11')
+      .get('/api/v1/github/login/callback?code=42')
       .redirects(1);
-
+    console.log('req.body', req.body);
     expect(req.body).toEqual({
       id: expect.any(String),
-      username: 'fake_github',
-      email: 'fake@example.com',
+      username: 'fake_github_user',
+      email: 'not-real@example.com',
       avatar: expect.any(String),
       iat: expect.any(Number),
       exp: expect.any(Number),
