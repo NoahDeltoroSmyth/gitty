@@ -59,7 +59,7 @@ module.exports = { exchangeCodeForToken, getGithubProfile }; -->
 
 ## Dependencies
 
-- npm i run setup-db
+- npm run setup-db
 - npm i cross-fetch
 - npm i jsonwebtoken
 - npm i cookie-parser
