@@ -11,9 +11,9 @@ const exchangeCodeForToken = async (code) => {
 const getGithubProfile = async (token) => {
   console.log(`MOCK INVOKED: getGithubProfile(${token})`);
   return {
-    login: 'fake_github_user',
+    login: 'fake_github',
     avatar_url: 'https://www.placecage.com/gif/300/300',
-    email: 'not-real@example.com',
+    email: 'fake@example.com',
   };
 };
 
