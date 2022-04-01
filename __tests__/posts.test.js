@@ -25,20 +25,37 @@ describe('gitty routes', () => {
         post: 'This is my second post!',
       },
     ];
+
     //agent variable
     const agent = request.agent(app);
+
     // unauthenticated user tries signing in, should get 401
     let res = await agent.get('/api/v1/posts');
     expect(res.status).toEqual(401);
-    // sign in a user and redirect
-    // await UserService.create({
-    //   username: 'fake_github_user',
-    //   email: 'not-real@example.com',
-    // });
-    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
+
     // await list of posts should be 200 status
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
     res = await agent.get('/api/v1/posts');
     expect(res.status).toEqual(200);
     expect(res.body).toEqual([...posts]);
+  });
+
+  it('allows authenticated user to make posts', async () => {
+    const agent = request.agent(app);
+
+    const post = {
+      id: '3',
+      post: 'This is my third post!',
+    };
+
+    // unauthenticated user tries making a post, should get 401
+    let res = await agent.post('/api/v1/posts');
+    expect(res.status).toEqual(401);
+
+    // await list of posts should be 200 status
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
+    res = await agent.post('/api/v1/posts');
+    expect(res.status).toEqual(200);
+    expect(res.body).toEqual({ ...post });
   });
 });
