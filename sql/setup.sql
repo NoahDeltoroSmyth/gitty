@@ -16,3 +16,6 @@ CREATE TABLE posts (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     post TEXT
 );
+
+INSERT INTO posts(post)
+VALUES ('This is my first post!'), ('This is my second post!')
