@@ -40,13 +40,13 @@ describe('gitty routes', () => {
     const agent = request.agent(app);
 
     await UserService.create({
-      email: 'test4@gmail.com',
-      password: 'password',
+      username: 'fake_github_user',
+      email: 'not-real@example.com',
     });
 
     await agent
-      .post('/api/v1/users/session')
-      .send({ email: 'test4@gmail.com', password: 'password' });
+      .post('/api/v1/github/login')
+      .send({ username: 'fake_github_user', email: 'not-real@example.com' });
 
     const res = await agent.delete('/api/v1/github/sessions');
     expect(res.body).toEqual({
