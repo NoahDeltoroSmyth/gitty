@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const UserService = require('../lib/services/UserService');
 jest.mock('../lib/utils/github');
 
 describe('gitty routes', () => {
@@ -32,6 +33,25 @@ describe('gitty routes', () => {
       avatar: expect.any(String),
       iat: expect.any(Number),
       exp: expect.any(Number),
+    });
+  });
+
+  it('allows a user to log out', async () => {
+    const agent = request.agent(app);
+
+    await UserService.create({
+      email: 'test4@gmail.com',
+      password: 'password',
+    });
+
+    await agent
+      .post('/api/v1/users/session')
+      .send({ email: 'test4@gmail.com', password: 'password' });
+
+    const res = await agent.delete('/api/v1/github/sessions');
+    expect(res.body).toEqual({
+      success: true,
+      message: 'Signed out successfully!',
     });
   });
 });
