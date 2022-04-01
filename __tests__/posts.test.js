@@ -54,8 +54,7 @@ describe('gitty routes', () => {
 
     // await list of posts should be 200 status
     await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
-    res = await agent.post('/api/v1/posts');
-    expect(res.status).toEqual(200);
-    expect(res.body).toEqual({ ...post });
+    res = await agent.post('/api/v1/posts').send(post);
+    expect(res.body).toEqual({ id: expect.any(String), ...post });
   });
 });
