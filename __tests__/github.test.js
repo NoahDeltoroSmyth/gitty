@@ -22,18 +22,19 @@ describe('gitty routes', () => {
   });
 
   it('redirects user to dashboard after successful login', async () => {
-    const req = await request
+    const res = await request
       .agent(app)
       .get('/api/v1/github/login/callback?code=42')
       .redirects(1);
-    expect(req.body).toEqual({
-      id: expect.any(String),
-      username: 'fake_github_user',
-      email: 'not-real@example.com',
-      avatar: expect.any(String),
-      iat: expect.any(Number),
-      exp: expect.any(Number),
-    });
+    expect(res.req.path).toEqual('/api/v1/posts');
+    // expect(req.body).toEqual({
+    //   id: expect.any(String),
+    //   username: 'fake_github_user',
+    //   email: 'not-real@example.com',
+    //   avatar: expect.any(String),
+    //   iat: expect.any(Number),
+    //   exp: expect.any(Number),
+    // });
   });
 
   it('allows a user to log out', async () => {
